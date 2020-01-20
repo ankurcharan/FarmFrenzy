@@ -1,11 +1,18 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 
 
 
+
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
+
+app.use(fileUpload());
+
+app.use(express.static('./public'));
+
 
 
 
@@ -18,10 +25,8 @@ function runPy() {
 
 		let spawn = require('child_process').spawn;
 
-		let process = null;
+		const process = spawn('python3', ["./classifier/index.py"]);
 		
-		process = spawn('python3', ["./classifier/index.py"]);
-
 		process.stdout.on('data', (data) => {
 
 			let crop = data.toString().trim();
@@ -34,18 +39,67 @@ function runPy() {
 			else {
 				resolve(crop);
 			}
-		
-		})
-
-		
-	})
+		});
+	});
 }
 
 
 
 
-app.use('/', (req, res) => {
 
+
+
+
+
+
+
+
+
+let cnt = 0;
+app.post('/api/expressup', (req, res) => {
+
+
+	if(!req.files || Object.keys(req.files).length === 0) {
+		return res.status(400).json({
+			success: false,
+			message: 'No files uplodaded'
+		});
+	}
+
+	let file = req.files.imageFile;
+
+	file.mv(`./images/${cnt++}.jpg`, (err) => {
+
+		if(err) {
+			return res.status(500).json({
+				success: false,
+				message: 'couldnt move',
+				error: err
+			});
+		}
+
+		return res.status(200).json({
+			success: true,
+			message: 'file uploaded'
+		})
+	})
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.use('/api', (req, res) => {
 
 	runPy()
 	.then((data) => {
@@ -62,8 +116,7 @@ app.use('/', (req, res) => {
 			message: 'Internal Server Error.',
 			error: err
 		});
-	})
-	
+	});	
 })
 
 

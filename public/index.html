@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>FarmFrenzy</title>
+</head>
+<body>
+	
+
+
+	<form 
+		id="imageForm"
+		method="POST"
+		action="http://localhost:9000/api/expressup"
+		enctype="multipart/form-data">
+	
+		<input type="file" accept="image/jpeg" name="imageFile">
+
+		<input type="submit" value="Upload">
+	</form>
+
+
+
+
+
+
+	<!-- Tried Something -->
+
+<!-- 
+	<input id="image-input" type="file" accept="image/*" value="Take Photo">
+	<br>
+	<label id="result"></label>
+
+	<script>
+	
+		const imageInput = document.getElementById('image-input');
+	
+		imageInput.addEventListener('change', (e) => {
+
+			doSomethingWithFiles(e.target.files);
+		});
+
+		function doSomethingWithFiles(files) {
+
+			console.log(files[0]);
+		
+			fetch('/api', {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'multipart/form-data',
+				},
+				body: {
+					image: files[0]
+				}
+			})
+			.then((res) => res.json())
+			.then((res) => {
+				
+				let result = document.getElementById('result');
+				if(res.success) {
+					result.innerText = res.message; 
+				} else {
+					result.innerText = 'Invalid';
+				}
+			})
+			.catch((err) => console.log('error ', err));
+		}
+
+
+	</script> -->
+
+
+</body>
+</html>
