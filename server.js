@@ -1,8 +1,12 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
+const uuid4 = require('uuid/v4');
+const multer = require('multer');
+const cors = require('cors')
+let upload = multer({ dest: 'uploads/ '});
 
 const app = express();
-
+app.use(cors())
 
 
 
@@ -17,7 +21,7 @@ app.use(express.static('./public'));
 
 
 
-function runPy() {
+function runPy(path) {
 
 	return new Promise((resolve, reject) => {
 	
@@ -25,7 +29,7 @@ function runPy() {
 
 		let spawn = require('child_process').spawn;
 
-		const process = spawn('python3', ["./classifier/index.py"]);
+		const process = spawn('python3', ["./classifier/index.py", path]);
 		
 		process.stdout.on('data', (data) => {
 
@@ -43,19 +47,40 @@ function runPy() {
 	});
 }
 
+app.use('/', (req, res, next) => {
+	console.log('here');
+	next();
+})
+
+app.post('/api/process', (req, res) => {
+
+	
+
+	let path = req.body.path;
+	console.log(path)
+
+	runPy(path)
+		.then((data) => {
+
+			return res.status(200).json({
+				success: true,
+				message: 'result',
+				crop: data
+			});
+		})
+		.catch((err) => {
+
+			return res.status(500).json({
+				success: false,
+				message: 'try later'
+			})
+		});
+
+}) 
 
 
 
 
-
-
-
-
-
-
-
-
-let cnt = 0;
 app.post('/api/expressup', (req, res) => {
 
 
@@ -68,7 +93,8 @@ app.post('/api/expressup', (req, res) => {
 
 	let file = req.files.imageFile;
 
-	file.mv(`./images/${cnt++}.jpg`, (err) => {
+	const path = `./images/${uuid4()}.jpg`; 
+	file.mv(path, (err) => {
 
 		if(err) {
 			return res.status(500).json({
@@ -78,10 +104,23 @@ app.post('/api/expressup', (req, res) => {
 			});
 		}
 
-		return res.status(200).json({
-			success: true,
-			message: 'file uploaded'
+		runPy(path)
+		.then((data) => {
+
+			return res.status(200).json({
+				success: true,
+				message: 'result',
+				crop: data
+			});
 		})
+		.catch((err) => {
+
+			return res.status(500).json({
+				success: false,
+				message: 'try later'
+			})
+		});
+
 	})
 })
 
@@ -96,28 +135,6 @@ app.post('/api/expressup', (req, res) => {
 
 
 
-
-
-
-app.use('/api', (req, res) => {
-
-	runPy()
-	.then((data) => {
-
-		res.status(200).json({
-			success: true,
-			message: data
-		});
-	})
-	.catch((err) => {
-
-		res.status(500).json({
-			success: false,
-			message: 'Internal Server Error.',
-			error: err
-		});
-	});	
-})
 
 
 
