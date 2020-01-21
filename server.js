@@ -222,7 +222,7 @@ app.get('/api/crops', (req, res) => {
 
 
 
-const PORT = 9000;
+const PORT = process.env.PORT || 80;
 app.listen(PORT, (err) => {
 
 	if(err) {
