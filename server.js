@@ -72,8 +72,10 @@ app.post('/api/process', (req, res) => {
 	
 	let path = req.body.path;
 
-	let latitude = '29.941996699999997';	// req.body
-	let longitude = '29.941996699999997';	// req.body
+	// let latitude = '29.941996699999997';	// req.body
+	// let longitude = '29.941996699999997';	// req.body
+	let latitude = req.body.latitude;
+	let longitude = req.body.longitude;
 	
 	// console.log(path);
 
