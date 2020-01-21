@@ -35,33 +35,35 @@ function runPy(path) {
 		console.log('Running Py Script');
 		console.log('path', path);
 
-		let spawn = require('child_process').spawn;
+		resolve('wheat');
 
-		const process = spawn('python3', ["./classifier/index.py", path]);
+		// let spawn = require('child_process').spawn;
+
+		// const process = spawn('python3', ["./classifier/index.py", path]);
 		
-		console.log('Running.....');
+		// console.log('Running.....');
 
-		process.stdout.on('data', (data) => {
+		// process.stdout.on('data', (data) => {
 
-			let crop = data.toString().trim();
+		// 	let crop = data.toString().trim();
 
-			console.log(crop, ' in promise');
-			console.log(crop.length, ' in promise');
+		// 	console.log(crop, ' in promise');
+		// 	console.log(crop.length, ' in promise');
 
-			things = crop.split(' ');
-			if(things.length === 0) {
-				reject('Zero Length String From PY');
-			}
+		// 	things = crop.split(' ');
+		// 	if(things.length === 0) {
+		// 		reject('Zero Length String From PY');
+		// 	}
 
-			things = things[things.length - 1];
+		// 	things = things[things.length - 1];
 		
-			if(things === undefined || things === null) {
-				reject('String undefined/null');
-			}
-			else {
-				resolve(things);
-			}
-		});
+		// 	if(things === undefined || things === null) {
+		// 		reject('String undefined/null');
+		// 	}
+		// 	else {
+		// 		resolve(things);
+		// 	}
+		// });
 	});
 }
 
