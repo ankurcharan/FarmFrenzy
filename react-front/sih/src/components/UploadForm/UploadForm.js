@@ -55,7 +55,10 @@ const UploadForm = (props) => {
 
 			props.history.push({
 				pathname:'/details',
-				state: res.data
+				state: {
+					url,
+					data: res.data
+				}
 			})
 		} catch (error) {
 			console.log(error)

@@ -3,7 +3,12 @@ const fileUpload = require('express-fileupload');
 const uuid4 = require('uuid/v4');
 const multer = require('multer');
 const cors = require('cors')
-let upload = multer({ dest: 'uploads/ '});
+// let upload = multer({ dest: 'uploads/ '});
+
+const controllers = require('./controller');
+
+// init db
+require('./db');
 
 const app = express();
 app.use(cors())
@@ -18,6 +23,30 @@ app.use(fileUpload());
 app.use(express.static('./public'));
 
 
+
+const cropData = {
+	wheat: {
+		name: 'Wheat',
+		text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`
+	},
+	coffee: {
+		name: 'Coffee',
+		text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`
+	},
+	bottlegourd: {
+		name: 'Bottle Gourd',
+		text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`
+	},
+	cotton: {
+		name: 'Cotton',
+		text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`
+	},
+	sugarcane: {
+		name: 'Sugarcane',
+		text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`
+	},
+
+}
 
 
 
@@ -55,30 +84,56 @@ app.use('/', (req, res, next) => {
 app.post('/api/process', (req, res) => {
 
 	
-
 	let path = req.body.path;
+
+	let latitude = '29.941996699999997';	// req.body
+	let longitude = '29.941996699999997';	// req.body
+	
 	console.log(path)
 
 	runPy(path)
 		.then((data) => {
 
-			return res.status(200).json({
-				success: true,
-				message: 'result',
-				crop: data
+			console.log(data, '  ye itna');
+
+			controllers.saveNewRqst({
+				latitude: latitude,
+				longitude: longitude,
+				image: path
+			})
+			.then((savedRqst) => {
+
+				console.log(' yahan suc');
+
+				return res.status(200).json({
+					success: true,
+					message: 'result and saved',
+					crop: cropData[data],
+					savedRequest: savedRqst
+				});
+			})
+			.catch((err) => {
+
+				console.log('fail');
+
+				return res.status(500).json({
+					success: true,
+					message: 'result and not saved',
+					crop: cropData[data],
+					error: err
+				});
 			});
 		})
 		.catch((err) => {
 
 			return res.status(500).json({
 				success: false,
-				message: 'try later'
+				message: 'try later',
+				error: err
 			})
 		});
 
 }) 
-
-
 
 
 app.post('/api/expressup', (req, res) => {
@@ -128,6 +183,14 @@ app.post('/api/expressup', (req, res) => {
 
 
 
+app.get('/api/crops', (req, res) => {
+
+	return res.status(200).json({
+		success: true,
+		message: 'all crop data',
+		data: cropData
+	});
+})
 
 
 

@@ -2,7 +2,7 @@ import sys
 
 
 def output():
-	print("Wheat")
+	print("wheat")
 	sys.stdout.flush()
 
 output()
