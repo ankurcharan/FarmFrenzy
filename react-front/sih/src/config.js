@@ -1,5 +1,5 @@
 let config = {
-	url: 'http://localhost:9000'
+	url: 'https://farmfrenzy.herokuapp.com'
 }
 
 module.exports = config;
