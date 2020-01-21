@@ -35,35 +35,34 @@ function runPy(path) {
 		console.log('Running Py Script');
 		console.log('path', path);
 
-		resolve('wheat');
+		// resolve('sugarcane');
+		let spawn = require('child_process').spawn;
 
-		// let spawn = require('child_process').spawn;
+		let process = spawn('python3', ["./classifier/index.py", path]);
+		console.log('Running.....');
 
-		// const process = spawn('python3', ["./classifier/index.py", path]);
+		process.stdout.on('data', (data) => {
+
+			let crop = data.toString().trim();
+
+			console.log(crop, ' in promise');
+			console.log(crop.length, ' in promise');
+
+			things = crop.split(' ');
+			if(things.length === 0) {
+				reject('Zero Length String From PY');
+				return;
+			}
+
+			things = things[things.length - 1];
 		
-		// console.log('Running.....');
-
-		// process.stdout.on('data', (data) => {
-
-		// 	let crop = data.toString().trim();
-
-		// 	console.log(crop, ' in promise');
-		// 	console.log(crop.length, ' in promise');
-
-		// 	things = crop.split(' ');
-		// 	if(things.length === 0) {
-		// 		reject('Zero Length String From PY');
-		// 	}
-
-		// 	things = things[things.length - 1];
-		
-		// 	if(things === undefined || things === null) {
-		// 		reject('String undefined/null');
-		// 	}
-		// 	else {
-		// 		resolve(things);
-		// 	}
-		// });
+			if(things === undefined || things === null) {
+				reject('String undefined/null');
+			}
+			else {
+				resolve(things);
+			}
+		});
 	});
 }
 
