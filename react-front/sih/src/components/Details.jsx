@@ -23,14 +23,16 @@ const Details = (props) => {
 				<div class="col s12 m12 center">
 					<div class="card white darken-1">
 						<div class="card-content black-text">
-							<center><span class="card-title">Details</span>
-							</center>
+							{/* <center><span class="card-title">Details</span> */}
+							{/* </center> */}
 						
+							<h3>{state.data.crop.name}</h3>
+
 							<div>
-								<img src={state.url} alt="crop img"/>
+								<img className="responsive-img" src={state.url} alt="crop img"/>
 							</div>
 							<br/>
-							<h3>{state.data.crop.name}</h3>
+							
 			
 							<p>{state.data.crop.text}</p>	 */}
 												

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import config from '../config';
+import { string } from 'prop-types';
 
 const AllCrops = () => {
 
@@ -44,7 +45,8 @@ const AllCrops = () => {
 
 						return (
 							<div>
-								<span>{item.name}</span>
+								<br /> <br />
+								<strong>{item.name}</strong>
 								<br />
 								<p>{item.text}</p>
 								<br />

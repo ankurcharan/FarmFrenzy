@@ -18,7 +18,7 @@ class Navbar extends React.Component {
 			
  			<nav>
  				<div class="nav-wrapper">
- 				<a href="#!" class="brand-logo">Crop Processor</a>
+ 				<Link to='/' class="brand-logo">Crop Processor</Link>
  				<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
  				<ul class="right hide-on-med-and-down">
 					<li><Link to="/">Home</Link></li>
