@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import config from '../config';
 
 const AllCrops = () => {
 
@@ -11,7 +12,7 @@ const AllCrops = () => {
 
 	useEffect(() => {
 
-		const url = 'http://localhost:9000/api/crops'
+		const url = `${config.url}/api/crops`
 		axios.get(url)
 		.then((data) => {
 

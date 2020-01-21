@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 // import axios from 'axios';
 import Firebase from '../../firebase';
 import axios from 'axios';
+import config from '../../config';
 
 const UploadForm = (props) => {
 
@@ -47,7 +48,7 @@ const UploadForm = (props) => {
 		// })
 
 		try {
-			const res = await axios.post('http://localhost:9000/api/process',{
+			const res = await axios.post(`${config.url}/api/process`,{
 				path: url
 			})
 
