@@ -11,7 +11,7 @@ def downloadFile(uri):
 		return
 
 	r = requests.get(uri)
-	name = './classifier/test_image.jpg'
+	name = './test_image.jpg'
 
 	with open(name, 'wb') as f:
 		f.write(r.content)

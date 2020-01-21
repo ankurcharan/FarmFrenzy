@@ -27,12 +27,12 @@ app.use(express.static('./public'));
 
 
 
-
 function runPy(path) {
 
 	return new Promise((resolve, reject) => {
 	
 		console.log('Running Py Script');
+		console.log('path', path);
 
 		let spawn = require('child_process').spawn;
 

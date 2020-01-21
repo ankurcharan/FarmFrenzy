@@ -48,7 +48,7 @@ const UploadForm = (props) => {
 		// })
 
 		try {
-			const res = await axios.post(`${config.url}/api/process`,{
+			const res = await axios.post(`${config.url}/api/process`, {
 				path: url
 			})
 
