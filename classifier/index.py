@@ -1,4 +1,4 @@
-#!./venv/bin/python3
+#!.classifier//venv/bin/activate
 
 import sys
 import requests
@@ -18,12 +18,12 @@ def downloadFile(uri):
 
 def getCrop():
 
-	# downloadFile(sys.argv[1])
+	downloadFile(sys.argv[1])
 
-	# res = sihprediction.work()
+	res = sihprediction.work()
 
-	# print(res)
-	print('wheat')
+	print(res)
+	# print('wheat')
 	sys.stdout.flush()
 
 getCrop()

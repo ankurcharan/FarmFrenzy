@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import axios from 'axios';
 import Firebase from '../../firebase';
 import axios from 'axios';
@@ -7,8 +7,12 @@ import config from '../../config';
 const UploadForm = (props) => {
 
 	const [state, setState] = useState({
-		file: null
+		file: null,
+		latitude: null,
+		longitude: null,
+		navigatorMsg: 'Get Location'
 	});
+
 
 	const handleChange = (e) => {
 		setState({
@@ -48,9 +52,18 @@ const UploadForm = (props) => {
 		// })
 
 		try {
+
+			if(!(state.latitude) || !(state.longitude) || !(state.file)) {
+
+				alert('enter all fields');
+				return;
+			}
+
 			const res = await axios.post(`${config.url}/api/process`, {
-				path: url
-			})
+				path: url,
+				latitude: state.latitude,
+				longitude: state.longitude
+			});
 
 			console.log(res)
 
@@ -63,6 +76,44 @@ const UploadForm = (props) => {
 			})
 		} catch (error) {
 			console.log(error)
+		}
+	}
+
+	const getPosition = (position) => {
+
+
+		console.log('position', position);
+
+		if(position) {
+			setState({
+				...state,
+				latitude: position.coords.latitude,
+				longitude: position.coords.longitude
+			},
+			() => {
+				console.log(state);
+			});
+		
+		}
+	}
+
+	const getLocation = async (e) => {
+
+		e.preventDefault();
+
+		try {
+
+			if(navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(getPosition);
+			} else {
+				setState({
+					...state,
+					navigatorMsg: 'Geolocation not supported'
+				});
+			}			
+		}
+		catch (err) {
+			console.log(err);
 		}
 	}
 
@@ -130,6 +181,21 @@ const UploadForm = (props) => {
 									<input class="file-path validate" type="text" />
 								</div>
 								</div>
+								
+								<button 
+									onClick={getLocation}
+									class="btn waves-effect waves-light" 
+									type="submit" name="action">
+										{
+											(state.latitude && state.longitude) ? 
+											(state.longitude + ' ' + state.latitude) :
+											(state.navigatorMsg)
+										}
+									<i class="material-icons right">location_searching</i>
+								</button>
+								
+								<br />
+								<br />
 
 								<button 
 									class="btn waves-effect waves-light" 

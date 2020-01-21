@@ -2,7 +2,8 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const uuid4 = require('uuid/v4');
 const multer = require('multer');
-const cors = require('cors')
+const cors = require('cors');
+const fs = require('fs');
 // let upload = multer({ dest: 'uploads/ '});
 
 const controllers = require('./controller');
@@ -38,6 +39,8 @@ function runPy(path) {
 
 		const process = spawn('python3', ["./classifier/index.py", path]);
 		
+		console.log('Running.....');
+
 		process.stdout.on('data', (data) => {
 
 			let crop = data.toString().trim();
@@ -238,9 +241,42 @@ app.get('/api/crops', (req, res) => {
 })
 
 
+const createCSV = (req, res, data) => {
+
+	fs.closeSync(fs.openSync('./database.csv', 'w'));
+
+	fs.appendFileSync('./database.csv', 'Latitude, Longitude, CreatedAt, ImagePath\n');
+	fs.appendFileSync('./database.csv', ',,,\n');
+
+	data.forEach(element => {
+		
+		fs.appendFileSync('./database.csv',
+			`${element.latitude}, ${element.longitude}, ${element.createdAt}, ${element.image}\n`,
+		);
+	});
 
 
+	return res.download('./database.csv');
 
+}
+
+
+app.get('/api/download', (req, res) => {
+
+	controllers.listAllRequests()
+	.then(async (data) => {
+		console.log(data);
+		await createCSV(req, res, data);
+		return;
+	})
+	.catch((err) => {
+
+		return res.status(500).json({
+			success: 'couldnt list',
+			error: err
+		})
+	})
+})
 
 
 

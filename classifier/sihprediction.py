@@ -20,10 +20,10 @@ def work():
     # from google.colab import drive
     # drive.mount('/content/drive')
 
-    model = load_model("./CNN.h5")
+    model = load_model("./classifier/CNN.h5")
 
 
-    img = cv2.imread('./test_image.jpg', cv2.IMREAD_UNCHANGED)
+    img = cv2.imread('./classifier/test_image.jpg', cv2.IMREAD_UNCHANGED)
     # print(img.shape)
     width = 240
     height = 150
