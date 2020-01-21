@@ -1,8 +1,29 @@
+#!./venv/bin/python3
+
 import sys
+import requests
 
+import sihprediction
 
-def output():
-	print("wheat")
+def downloadFile(uri):
+	
+	if(uri == None):
+		return
+
+	r = requests.get(uri)
+	name = './classifier/test_image.jpg'
+
+	with open(name, 'wb') as f:
+		f.write(r.content)
+
+def getCrop():
+
+	downloadFile(sys.argv[1])
+
+	# res = sihprediction.work()
+
+	# print(res)
+	print('wheat')
 	sys.stdout.flush()
 
-output()
+getCrop()

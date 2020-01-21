@@ -2,7 +2,11 @@ import React from 'react'
 
 const Details = (props) => {
 	console.log(props);
+	
 	const {state} = props.location
+	
+	console.log(state);
+	
 	return (
 		<div>
 			
@@ -23,12 +27,12 @@ const Details = (props) => {
 							</center>
 						
 							<div>
-								<img src={state.url} alt="img"/>
+								<img src={state.url} alt="crop img"/>
 							</div>
 							<br/>
 							<h3>{state.data.crop.name}</h3>
 			
-							<p>{state.data.crop.text}</p>	
+							<p>{state.data.crop.text}</p>	 */}
 												
 
 
