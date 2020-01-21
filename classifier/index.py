@@ -18,7 +18,7 @@ def downloadFile(uri):
 
 def getCrop():
 
-	downloadFile(sys.argv[1])
+	# downloadFile(sys.argv[1])
 
 	# res = sihprediction.work()
 
