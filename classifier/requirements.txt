@@ -13,7 +13,7 @@ cupshelpers==1.0
 cycler==0.10.0
 defer==1.0.6
 distro-info===0.18ubuntu0.18.04.1
-Django==2.2.7
+Django==2.2.10
 gast==0.2.2
 google-api-python-client==1.7.11
 google-auth==1.7.1
